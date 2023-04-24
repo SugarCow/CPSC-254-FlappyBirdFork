@@ -59,7 +59,10 @@ def flappygame():
                                vertical,
                                up_pipes,
                                down_pipes)
+
+        #Game is Over go to Game Over Screen
         if game_over:
+            gameOverScreen(your_score)
             return
   
         # check for your_score
@@ -106,7 +109,7 @@ def flappygame():
   
         window.blit(game_images['sea_level'], (ground, elevation))
         window.blit(game_images['flappybird'], (horizontal, vertical))
-  
+
         # Fetching the digits of score.
         numbers = [int(x) for x in list(str(your_score))]
         width = 0
@@ -172,6 +175,7 @@ pipeimage  = 'images/pipe.png'
 background_image = 'images/background.jpg'
 birdplayer_image = 'images/bird.png'
 sealevel_image = 'images/base.jfif'
+hourglass_image = 'assets/hourglass.png'
 framepersecond_clock = pygame.time.Clock()
 #############################################################
 
@@ -200,11 +204,43 @@ game_images['pipeimage'] = (pygame.transform.rotate(pygame.image.load(
     pipeimage).convert_alpha(), 180), pygame.image.load(
   pipeimage).convert_alpha())
 
-
-
-
 def get_font(size): # Returns Press-Start-2P in the desired size
     return pygame.font.Font("assets/Space.ttf", size)
+
+def gameOverScreen(score):
+     while True:
+        #set the basic backsreen and pointer
+        window.fill("Black")
+        gameOverScreen_MOUSE_POS = pygame.mouse.get_pos()
+
+        #create text incuding Screen, Score text, actual Score
+        gameOverScreen_TEXT = get_font(55).render("GAME OVER", True, "Red")
+        gameOverScreen_RECT = gameOverScreen_TEXT.get_rect(center=(300, 50))
+        score_TEXT = get_font(55).render("score:", True, "GREEN")
+        score_RECT = score_TEXT.get_rect(center=(275, 150))
+        scoreNumber_TEXT = get_font(55).render(str(score), True, "GREEN")
+        scoreNumber_RECT = scoreNumber_TEXT.get_rect(center=(415, 150))
+
+        #Display the text created
+        window.blit(gameOverScreen_TEXT, gameOverScreen_RECT)
+        window.blit(score_TEXT, score_RECT)
+        window.blit(scoreNumber_TEXT, scoreNumber_RECT)
+
+        #Create a button to return to main menu
+        gameOverScreen_BACK = Button(image=pygame.image.load("assets/Play Rect.png"), pos=(300, 300), 
+                            text_input="MAIN MENU", font=get_font(30), base_color="White", hovering_color="Green")
+        gameOverScreen_BACK.changeColor(gameOverScreen_MOUSE_POS)
+        gameOverScreen_BACK.update(window)
+
+        #Parameters for quitting game and button reaction
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if gameOverScreen_BACK.checkForInput(gameOverScreen_MOUSE_POS):
+                    main_menu()
+        pygame.display.update()
 
 def play():
 
@@ -244,20 +280,22 @@ def play():
 
 def LEADER_BOARD():
     while True:
+        #set the basic backsreen and pointer
         LEADER_BOARD_POS = pygame.mouse.get_pos()
-
         window.fill("Black")
 
-        LEADER_BOARD_TEXT = get_font(45).render("This is the LEADER BOARD screen.", True, "White")
-        LEADER_BOARD_RECT = LEADER_BOARD_TEXT.get_rect(center=(300, 260))
+        #create text incuding that this will be the leadboard page
+        LEADER_BOARD_TEXT = get_font(30).render("This is the LEADER BOARD screen.", True, "White")
+        LEADER_BOARD_RECT = LEADER_BOARD_TEXT.get_rect(center=(300, 130))
         window.blit(LEADER_BOARD_TEXT, LEADER_BOARD_RECT)
 
-        LEADER_BOARD_BACK = Button(image=None, pos=(640, 460), 
-                            text_input="BACK", font=get_font(75), base_color="White", hovering_color="Green")
-
+        #create the button to return to the main menu
+        LEADER_BOARD_BACK = Button(image=None, pos=(300, 400), 
+                            text_input="BACK", font=get_font(30), base_color="White", hovering_color="Green")
         LEADER_BOARD_BACK.changeColor(LEADER_BOARD_POS)
         LEADER_BOARD_BACK.update(window)
 
+        #Parameters for quitting game and button reaction
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -270,26 +308,31 @@ def LEADER_BOARD():
 
 def main_menu():
     while True:
-        #SCREEN.blit(BG, (0, 0))
+        #set the basic backsreen and pointer
         window.fill("Black")
         MENU_MOUSE_POS = pygame.mouse.get_pos()
 
-        MENU_TEXT = get_font(70).render("Name Pending", True, "Red")
-        MENU_RECT = MENU_TEXT.get_rect(center=(300, 100))
+        #Create the text for the gae name
+        MENU_TEXT = get_font(55).render("Name Pending", True, "Red")
+        MENU_RECT = MENU_TEXT.get_rect(center=(300, 50))
 
-        PLAY_BUTTON = Button(image=pygame.image.load("assets/Play Rect.png"), pos=(300, 250), 
-                            text_input="PLAY", font=get_font(45), base_color="#d7fcd4", hovering_color="Green")
-        LEADER_BOARD_BUTTON = Button(image=pygame.image.load("assets/Options Rect.png"), pos=(300, 400), 
-                            text_input="LEADER BOARD", font=get_font(50), base_color="#d7fcd4", hovering_color="Green")
-        QUIT_BUTTON = Button(image=pygame.image.load("assets/Quit Rect.png"), pos=(300, 550), 
-                            text_input="QUIT", font=get_font(45), base_color="#d7fcd4", hovering_color="Green")
+        #Create the button for the diffrent screen including play, leaderboard, and quit option
+        PLAY_BUTTON = Button(image=pygame.image.load("assets/Play Rect.png"), pos=(300, 175), 
+                            text_input="PLAY", font=get_font(50), base_color="#d7fcd4", hovering_color="Green")
+        LEADER_BOARD_BUTTON = Button(image=pygame.image.load("assets/Options Rect.png"), pos=(300, 300), 
+                            text_input="LEADER BOARD", font=get_font(55), base_color="#d7fcd4", hovering_color="Green")
+        QUIT_BUTTON = Button(image=pygame.image.load("assets/Quit Rect.png"), pos=(300, 425), 
+                            text_input="QUIT", font=get_font(50), base_color="#d7fcd4", hovering_color="Green")
 
         window.blit(MENU_TEXT, MENU_RECT)
 
+
+        #Set the interaction with the buttons to chnage color when you hover over 
         for button in [PLAY_BUTTON, LEADER_BOARD_BUTTON, QUIT_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
             button.update(window)
-        
+
+        #Parameters for quitting game and buttons reaction
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
