@@ -55,12 +55,21 @@ def flappygame():
                     bird_velocity_y = bird_flap_velocity
                     bird_flapped = True
   
+
+        # This function will return true
+        # if the flappybird is crashed
+        if 5 < your_score < 10: 
+            collision = False
+        else:
+            collision = True
+      
         # This function will return true
         # if the flappybird is crashed
         game_over = isGameOver(horizontal,
                                vertical,
                                up_pipes,
-                               down_pipes)
+                               down_pipes,
+                              collision)         
 
         #Game is Over go to Game Over Screen
         if game_over:
@@ -84,6 +93,8 @@ def flappygame():
             pipeVelX -= -.02
             positionScore -= .02
           #  UpperBound -= .02
+
+        
   
         if bird_velocity_y < bird_Max_Vel_Y and not bird_flapped:
             bird_velocity_y += birdAccY
@@ -143,22 +154,26 @@ def flappygame():
   
 
   
-def isGameOver(horizontal, vertical, up_pipes, down_pipes):
+def isGameOver(horizontal, vertical, up_pipes, down_pipes,Collision):
+
+
+
     if vertical > elevation - 25 or vertical < 0:
-        return True
+        return Collision
   
     for pipe in up_pipes:
         pipeHeight = game_images['pipeimage'][0].get_height()
         if(vertical < pipeHeight + pipe['y'] and\
            abs(horizontal - pipe['x']) < game_images['pipeimage'][0].get_width()):
-            return True
+            return Collision
   
     for pipe in down_pipes:
         if (vertical + game_images['flappybird'].get_height() > pipe['y']) and\
         abs(horizontal - pipe['x']) < game_images['pipeimage'][0].get_width():
-            return True
+            return Collision
     return False
   
+
 
 
 
