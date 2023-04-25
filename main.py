@@ -33,8 +33,10 @@ def flappygame():
     ]
   
     # pipe velocity along x
-    pipeVelX = -4
-  
+    pipeVelX = -9 #-4 is magic number 
+    positionScore = 9
+    UpperBound = 15
+
     # bird velocity
     bird_velocity_y = -9
     bird_Max_Vel_Y = 10
@@ -69,9 +71,19 @@ def flappygame():
         playerMidPos = horizontal + game_images['flappybird'].get_width()/2
         for pipe in up_pipes:
             pipeMidPos = pipe['x'] + game_images['pipeimage'][0].get_width()/2
-            if pipeMidPos <= playerMidPos < pipeMidPos + 4:
+            if pipeMidPos <= playerMidPos < pipeMidPos + positionScore:
                 your_score += 1
                 print(f"Your your_score is {your_score}")
+
+        if (your_score % 2 == 0):
+            pipeVelX += -.04
+            positionScore += .04
+           # UpperBound += .04
+
+        if (your_score % 5 == 0):
+            pipeVelX -= -.02
+            positionScore -= .02
+          #  UpperBound -= .02
   
         if bird_velocity_y < bird_Max_Vel_Y and not bird_flapped:
             bird_velocity_y += birdAccY
@@ -89,7 +101,7 @@ def flappygame():
   
         # Add a new pipe when the first is
         # about to cross the leftmost part of the screen
-        if 0 < up_pipes[0]['x'] < 5:
+        if 0 < up_pipes[0]['x'] < UpperBound: ##for greater 5 is magic numb
             newpipe = createPipe()
             up_pipes.append(newpipe[0])
             down_pipes.append(newpipe[1])
