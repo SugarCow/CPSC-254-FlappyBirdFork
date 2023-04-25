@@ -129,6 +129,7 @@ def flappygame():
         pygame.display.update()
         framepersecond_clock.tick(framepersecond)
   
+
   
 def isGameOver(horizontal, vertical, up_pipes, down_pipes):
     if vertical > elevation - 25 or vertical < 0:
@@ -146,7 +147,9 @@ def isGameOver(horizontal, vertical, up_pipes, down_pipes):
             return True
     return False
   
-  
+
+
+
 def createPipe():
     offset = window_height/3
     pipeHeight = game_images['pipeimage'][0].get_height()
