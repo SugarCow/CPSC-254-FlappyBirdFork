@@ -58,8 +58,13 @@ def flappygame():
 
         # This function will return true
         # if the flappybird is crashed
-        if 5 < your_score < 10: 
+        if 15 < your_score < 18: 
             collision = False
+            #show power up text
+            gameOverScreen_TEXT = get_font(55).render("Invincible", True, "Yellow")
+            gameOverScreen_RECT = gameOverScreen_TEXT.get_rect(center=(300,50))
+            window.blit(gameOverScreen_TEXT, gameOverScreen_RECT)
+            pygame.display.update()
         else:
             collision = True
       
@@ -89,10 +94,14 @@ def flappygame():
             positionScore += .04
            # UpperBound += .04
 
-        if (your_score % 5 == 0):
+        if (your_score % 5 == 0 and your_score != 0):
             pipeVelX -= -.02
             positionScore -= .02
           #  UpperBound -= .02
+            gameOverScreen_TEXT = get_font(55).render("SLOW DOWN", True, "Blue")
+            gameOverScreen_RECT = gameOverScreen_TEXT.get_rect(center=(300, 50))
+            window.blit(gameOverScreen_TEXT, gameOverScreen_RECT)
+            pygame.display.update()
 
         
   
@@ -155,8 +164,6 @@ def flappygame():
 
   
 def isGameOver(horizontal, vertical, up_pipes, down_pipes,Collision):
-
-
 
     if vertical > elevation - 25 or vertical < 0:
         return Collision
