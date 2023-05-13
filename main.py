@@ -2,8 +2,10 @@ import random
 import pygame, sys
 from pygame.locals import * 
 from button import Button
+import sys
 
 pygame.init()
+pygame.mixer.init()
 
 def flappygame():
     your_score = 0
@@ -343,13 +345,19 @@ def LEADER_BOARD():
 
         pygame.display.update()
 
-def main_menu():
+def main_menu(music_playing):
     while True:
         #set the basic backsreen and pointer
+        is_menu = True
+        
         window.fill("Black")
         MENU_MOUSE_POS = pygame.mouse.get_pos()
-
-        #Create the text for the gae name
+        if (music_playing == False):
+            current_music = pygame.mixer.Sound('sounds/Menu.wav')
+            current_music.set_volume(0.5)
+            current_music.play(loops= -1)
+            music_playing = True
+        #Create the text for the name
         MENU_TEXT = get_font(55).render("Name Pending", True, "Red")
         MENU_RECT = MENU_TEXT.get_rect(center=(300, 50))
 
@@ -376,6 +384,10 @@ def main_menu():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    current_music.stop()
+                    current_music = pygame.mixer.Sound('sounds/PlayGame.wav')
+                    current_music.set_volume(0.5)
+                    current_music.play(loops= -1)
                     play()
                 if LEADER_BOARD_BUTTON.checkForInput(MENU_MOUSE_POS):
                     LEADER_BOARD()
@@ -385,5 +397,6 @@ def main_menu():
 
         pygame.display.update()
 
-main_menu()
-
+if __name__ == '__main__':
+    music_playing = False
+    main_menu(music_playing)
