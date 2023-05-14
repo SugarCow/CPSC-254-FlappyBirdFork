@@ -288,7 +288,7 @@ def gameOverScreen(score):
         pygame.display.update()
 
 def play():
-
+    
     while True:
   
         # sets the coordinates of flappy bird
@@ -375,9 +375,17 @@ def main_menu(music_playing):
         QUIT_BUTTON = Button(image=pygame.image.load("assets/Quit Rect.png"), pos=(300, 425), 
                             text_input="QUIT", font=get_font(50), base_color="#d7fcd4", hovering_color="Green")
 
+        #Buttons to be used for the user to choose background
+        background_selection_day_button = Button(image=pygame.image.load("assets/Play Rect.png"), pos=(300, 175), 
+            text_input="DAY", font=get_font(30), base_color="#d7fcd4", hovering_color="Green")
+        background_selection_night_button = Button(image=pygame.image.load("assets/Options Rect.png"), pos=(300, 300), 
+            text_input="NIGHT", font=get_font(30), base_color="#d7fcd4", hovering_color="Green")
+        background_selection_mountain_button = Button(image=pygame.image.load("assets/Options Rect.png"), pos=(300, 425), 
+            text_input="MOUNTAIN", font=get_font(30), base_color="#d7fcd4", hovering_color="Green")
+
         window.blit(MENU_TEXT, MENU_RECT)
 
-
+    
         #Set the interaction with the buttons to chnage color when you hover over 
         for button in [PLAY_BUTTON, LEADER_BOARD_BUTTON, QUIT_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
@@ -394,6 +402,12 @@ def main_menu(music_playing):
                     current_music = pygame.mixer.Sound('sounds/PlayGame.wav')
                     current_music.set_volume(0.5)
                     current_music.play(loops= -1)
+                      # Somehow add the buttons for background selection here and check if background_selection_day_button,
+                      # background_selection_night_button, or background_selection_mountain_button have been pressed
+                      #  window.fill("Black")
+                      #  button.changeColor(MENU_MOUSE_POS)
+                      #  button.update(window)
+
                     play()
                 if LEADER_BOARD_BUTTON.checkForInput(MENU_MOUSE_POS):
                     LEADER_BOARD()
