@@ -215,6 +215,8 @@ background_image = 'images/background.jpg'
 birdplayer_image = 'images/bird.png'
 sealevel_image = 'images/base.jfif'
 hourglass_image = 'assets/hourglass.png'
+mountains_image = 'images/mountains.png'
+night_image = 'images/night.png'
 framepersecond_clock = pygame.time.Clock()
 #############################################################
 
@@ -239,6 +241,10 @@ game_images['sea_level'] = pygame.image.load(
     sealevel_image).convert_alpha()
 game_images['background'] = pygame.image.load(
     background_image).convert_alpha()
+game_images['mountains_background'] = pygame.image.load(
+    mountains_image).convert_alpha()
+game_images['night_background'] = pygame.image.load(
+    night_image).convert_alpha()
 game_images['pipeimage'] = (pygame.transform.rotate(pygame.image.load(
     pipeimage).convert_alpha(), 180), pygame.image.load(
   pipeimage).convert_alpha())
