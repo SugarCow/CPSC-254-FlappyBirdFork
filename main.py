@@ -192,8 +192,8 @@ def createPipe():
     y2 = offset + \
         random.randrange(
             0, int(window_height - game_images['sea_level'].get_height() - 1.2 * offset))  
-    pipeX = window_width + 10
-    y1 = pipeHeight - y2 + offset
+    pipeX = window_width + random.randint(30,140)
+    y1 = pipeHeight - y2 + (offset + random.randint(1,10))
     pipe = [
         # upper Pipe
         {'x': pipeX, 'y': -y1},
@@ -351,7 +351,10 @@ def LEADER_BOARD():
 
         pygame.display.update()
 
-def main_menu(music_playing):
+def main_menu():
+    # if any previous music was playing, stop all playback of all sound channels.
+    music_playing = False
+    pygame.mixer.stop()
     while True:
         #set the basic backsreen and pointer
         is_menu = True
@@ -418,5 +421,4 @@ def main_menu(music_playing):
         pygame.display.update()
 
 if __name__ == '__main__':
-    music_playing = False
-    main_menu(music_playing)
+    main_menu()
