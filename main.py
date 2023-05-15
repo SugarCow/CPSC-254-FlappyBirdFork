@@ -37,7 +37,7 @@ def flappygame():
     # pipe velocity along x
     pipeVelX = -9 #-4 is magic number 
     positionScore = 9
-    UpperBound = 15
+    UpperBound = 16
 
     # bird velocity
     bird_velocity_y = -9
