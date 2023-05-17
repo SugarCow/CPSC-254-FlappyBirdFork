@@ -7,7 +7,7 @@ import sys
 pygame.init()
 pygame.mixer.init()
 
-def flappygame():
+def flappygame(background):
     your_score = 0
     horizontal = int(window_width/5)
     vertical = int(window_width/2)
@@ -134,7 +134,7 @@ def flappygame():
             down_pipes.pop(0)
   
         # Lets blit our game images now
-        window.blit(game_images['background'], (0, 0))
+        window.blit(background, (0, 0))
         for upperPipe, lowerPipe in zip(up_pipes, down_pipes):
             window.blit(game_images['pipeimage'][0],
                         (upperPipe['x'], upperPipe['y']))
@@ -211,7 +211,9 @@ elevation = window_height * 0.8
 game_images = {}
 framepersecond = 32
 pipeimage  = 'images/pipe.png'
-background_image = 'images/background.jpg'
+background_day_image = 'images/background.jpg'
+background_mountain_image = 'images/mountains.png'
+background_night_image = 'images/night.png'
 birdplayer_image = 'images/bird.png'
 sealevel_image = 'images/base.jfif'
 hourglass_image = 'assets/hourglass.png'
@@ -239,8 +241,8 @@ game_images['flappybird'] = pygame.image.load(
     birdplayer_image).convert_alpha()
 game_images['sea_level'] = pygame.image.load(
     sealevel_image).convert_alpha()
-game_images['background'] = pygame.image.load(
-    background_image).convert_alpha()
+game_images['day_background'] = pygame.image.load(
+    background_day_image).convert_alpha()
 game_images['mountains_background'] = pygame.image.load(
     mountains_image).convert_alpha()
 game_images['night_background'] = pygame.image.load(
@@ -287,7 +289,7 @@ def gameOverScreen(score):
                     main_menu()
         pygame.display.update()
 
-def play():
+def play(background):
     
     while True:
   
@@ -311,11 +313,11 @@ def play():
                 # up key, start the game for them
                 elif event.type == KEYDOWN and (event.key == K_SPACE or\
                                                 event.key == K_UP):
-                    flappygame()
+                    flappygame(background)
   
                 # if user doesn't press anykey Nothing happen
                 else:
-                    window.blit(game_images['background'], (0, 0))
+                    window.blit(background, (0, 0))
                     window.blit(game_images['flappybird'],
                                 (horizontal, vertical))
                     window.blit(game_images['sea_level'], (ground, elevation))
@@ -370,26 +372,16 @@ def main_menu():
         MENU_TEXT = get_font(55).render("Name Pending", True, "Red")
         MENU_RECT = MENU_TEXT.get_rect(center=(300, 50))
 
-        #Create the button for the diffrent screen including play, leaderboard, and quit option
+        #Create the button for the different screen including play, leaderboard, and quit option
         PLAY_BUTTON = Button(image=pygame.image.load("assets/Play Rect.png"), pos=(300, 175), 
                             text_input="PLAY", font=get_font(50), base_color="#d7fcd4", hovering_color="Green")
         LEADER_BOARD_BUTTON = Button(image=pygame.image.load("assets/Options Rect.png"), pos=(300, 300), 
                             text_input="LEADER BOARD", font=get_font(55), base_color="#d7fcd4", hovering_color="Green")
         QUIT_BUTTON = Button(image=pygame.image.load("assets/Quit Rect.png"), pos=(300, 425), 
                             text_input="QUIT", font=get_font(50), base_color="#d7fcd4", hovering_color="Green")
-
-        #Buttons to be used for the user to choose background
-        background_selection_day_button = Button(image=pygame.image.load("assets/Play Rect.png"), pos=(300, 175), 
-            text_input="DAY", font=get_font(30), base_color="#d7fcd4", hovering_color="Green")
-        background_selection_night_button = Button(image=pygame.image.load("assets/Options Rect.png"), pos=(300, 300), 
-            text_input="NIGHT", font=get_font(30), base_color="#d7fcd4", hovering_color="Green")
-        background_selection_mountain_button = Button(image=pygame.image.load("assets/Options Rect.png"), pos=(300, 425), 
-            text_input="MOUNTAIN", font=get_font(30), base_color="#d7fcd4", hovering_color="Green")
-
         window.blit(MENU_TEXT, MENU_RECT)
-
     
-        #Set the interaction with the buttons to chnage color when you hover over 
+        #Set the interaction with the buttons to change color when you hover over 
         for button in [PLAY_BUTTON, LEADER_BOARD_BUTTON, QUIT_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
             button.update(window)
@@ -405,13 +397,57 @@ def main_menu():
                     current_music = pygame.mixer.Sound('sounds/PlayGame.wav')
                     current_music.set_volume(0.5)
                     current_music.play(loops= -1)
-                      # Somehow add the buttons for background selection here and check if background_selection_day_button,
-                      # background_selection_night_button, or background_selection_mountain_button have been pressed
-                      #  window.fill("Black")
-                      #  button.changeColor(MENU_MOUSE_POS)
-                      #  button.update(window)
+                     #Buttons to be used for the user to choose background
+                    window.fill("Black")
+                    background_selection_day_button = Button(image=pygame.image.load("assets/Play Rect.png"), pos=(300, 175), 
+                        text_input="DAY", font=get_font(30), base_color="#d7fcd4", hovering_color="Green")
+                    background_selection_day_button.changeColor(pygame.mouse.get_pos())
+                    background_selection_day_button.update(window)
 
-                    play()
+                    background_selection_night_button = Button(image=pygame.image.load("assets/Options Rect.png"), pos=(300, 300), 
+                        text_input="NIGHT", font=get_font(30), base_color="#d7fcd4", hovering_color="Green")
+                    background_selection_night_button.changeColor(pygame.mouse.get_pos())
+                    background_selection_night_button.update(window)
+
+                    background_selection_mountain_button = Button(image=pygame.image.load("assets/Options Rect.png"), pos=(300, 425), 
+                        text_input="MOUNTAIN", font=get_font(30), base_color="#d7fcd4", hovering_color="Green")
+                    background_selection_mountain_button.changeColor(pygame.mouse.get_pos())
+                    background_selection_mountain_button.update(window)
+
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
+                            for button in [background_selection_day_button, background_selection_mountain_button, background_selection_night_button]:
+                                button.changeColor(MENU_MOUSE_POS)
+                                button.update(window)
+                            #MENU_MOUSE_POS = pygame.mouse.get_pos()
+                            if background_selection_day_button.checkForInput(MENU_MOUSE_POS):
+                                background = game_images['day_background']
+                            elif background_selection_mountain_button.checkForInput(MENU_MOUSE_POS):
+                                background = game_images['mountains_background']
+                            elif background_selection_night_button.checkForInput(MENU_MOUSE_POS):
+                                background = game_images['night_background']
+                            #to test:, WORKS
+                            background = game_images['mountains_background']
+                            play(background)
+
+######
+        #gameOverScreen_MOUSE_POS = pygame.mouse.get_pos()
+
+        #gameOverScreen_BACK = Button(image=pygame.image.load("assets/Play Rect.png"), pos=(300, 300), 
+                            #text_input="MAIN MENU", font=get_font(30), base_color="White", hovering_color="Green")
+        #gameOverScreen_BACK.changeColor(gameOverScreen_MOUSE_POS)
+        #gameOverScreen_BACK.update(window)
+
+        #for event in pygame.event.get():
+            #if event.type == pygame.QUIT:
+                #pygame.quit()
+                #sys.exit()
+            #if event.type == pygame.MOUSEBUTTONDOWN:
+                #if gameOverScreen_BACK.checkForInput(gameOverScreen_MOUSE_POS):
+                    #main_menu()
+        #pygame.display.update()
+######
+
                 if LEADER_BOARD_BUTTON.checkForInput(MENU_MOUSE_POS):
                     LEADER_BOARD()
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
